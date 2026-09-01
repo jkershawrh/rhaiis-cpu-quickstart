@@ -1,8 +1,8 @@
-# CLAUDE.md — RHAIIS CPU Quickstart
+# CLAUDE.md — RHAII CPU Quickstart
 
 ## What This Is
 
-One-click quickstart for serving open-weight AI models on any Linux machine using the Red Hat AI Inference Server (RHAIIS 3.5). Companion repo for the "From Zero to Benchmark" blog post.
+One-click quickstart for serving open-weight AI models on any Linux machine using Red Hat AI Inference (RHAII 3.5). Companion repo for the "From Zero to Benchmark" blog post.
 
 No cluster, no GPU. Just `podman run` + `curl`.
 
@@ -24,7 +24,7 @@ MODEL=Qwen/Qwen2.5-7B-Instruct ./start.sh
 | Variable | Default | Purpose |
 |---|---|---|
 | `MODEL` | (interactive prompt) | Model to serve. Set to skip the prompt. |
-| `IMAGE` | `registry.redhat.io/rhaii-early-access/vllm-cpu-rhel9:3.5.0-ea.2-1782965184` | RHAIIS container image |
+| `IMAGE` | `registry.redhat.io/rhaii/vllm-cpu-rhel9:3.5.0-1786546771` | RHAII container image |
 | `CACHE_DIR` | `~/rhaii-cache` | Persistent model weight cache |
 | `HF_TOKEN` | (prompted) | Hugging Face access token |
 | `KVCACHE_SPACE` | Auto (4 for <=3B, 10 for 7B+) | KV cache size in GB |
@@ -33,11 +33,10 @@ MODEL=Qwen/Qwen2.5-7B-Instruct ./start.sh
 
 ## Image Status
 
-Using RHAIIS 3.5 Early Access. When GA drops, update IMAGE to:
-`registry.redhat.io/rhaii/vllm-cpu-rhel9:3.5.0`
+Using RHAII 3.5 GA image.
 
 ## Blog Alignment
 
 This quickstart is the on-ramp to:
-"From Zero to Benchmark: Deploying LLM Inference on CPU with RHAIIS 3.5"
+"From Zero to Benchmark: Deploying LLM Inference on CPU with RHAII 3.5"
 by Maryam Tahhan, John Harrigan, Anton Ivanov

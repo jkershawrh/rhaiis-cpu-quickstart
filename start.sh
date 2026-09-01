@@ -1,10 +1,10 @@
 #!/bin/bash
-# RHAIIS CPU Quickstart — One-click model serving
-# Pulls the Red Hat AI Inference Server, serves your chosen model, runs your first call.
+# RHAII CPU Quickstart — One-click model serving
+# Pulls Red Hat AI Inference, serves your chosen model, runs your first call.
 
 set -e
 
-IMAGE="${IMAGE:-registry.redhat.io/rhaii-early-access/vllm-cpu-rhel9:3.5.0-ea.2-1782965184}"
+IMAGE="${IMAGE:-registry.redhat.io/rhaii/vllm-cpu-rhel9:3.5.0-1786546771}"
 CACHE_DIR="${CACHE_DIR:-$HOME/rhaii-cache}"
 CONTAINER="inference-server"
 PORT=8000
@@ -28,7 +28,7 @@ if [ -z "$MODEL" ]; then
     header "Which model do you want to serve?"
     echo
     echo -e "  ${BOLD}1)${NC} Granite 2B  — lightweight, runs on 16 GB RAM (good for getting started)"
-    echo -e "  ${BOLD}2)${NC} Qwen 7B    — higher quality, runs on 32 GB RAM (matches the RHAIIS 3.5 blog)"
+    echo -e "  ${BOLD}2)${NC} Qwen 7B    — higher quality, runs on 32 GB RAM (matches the RHAII 3.5 blog)"
     echo
     read -rp "  Enter 1 or 2 [default: 1]: " MODEL_CHOICE
     MODEL_CHOICE="${MODEL_CHOICE:-1}"
@@ -103,7 +103,7 @@ fi
 
 # OS check — warn on macOS
 if [ "$(uname -s)" = "Darwin" ]; then
-    warn "macOS detected. The RHAIIS container requires Linux (RHEL, Fedora, Ubuntu). It will not run natively on macOS."
+    warn "macOS detected. The RHAII container requires Linux (RHEL, Fedora, Ubuntu). It will not run natively on macOS."
 fi
 
 # curl + jq
@@ -157,7 +157,7 @@ if [ "$RUNTIME" = "podman" ]; then
 fi
 
 # --- Start the server ---
-header "Starting the Red Hat AI Inference Server..."
+header "Starting Red Hat AI Inference..."
 
 info "Pulling container image (first time may take a few minutes)..."
 $RUNTIME pull "$IMAGE" 2>&1 | tail -1
@@ -276,7 +276,7 @@ echo -e "  \"The deployment failed and data was lost.\"    → ${RED}${NEG}${NC}
 # --- Summary ---
 header "Done!"
 echo
-echo -e "  The Red Hat AI Inference Server is running at ${BOLD}http://localhost:${PORT}${NC}"
+echo -e "  Red Hat AI Inference is running at ${BOLD}http://localhost:${PORT}${NC}"
 echo -e "  Model: ${BOLD}$MODEL${NC}"
 echo -e "  API: ${BOLD}OpenAI-compatible${NC} (/v1/chat/completions)"
 echo -e "  Cache: ${BOLD}$CACHE_DIR${NC} (weights persist across restarts)"

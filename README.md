@@ -1,12 +1,12 @@
 # Serve AI Models on Any Linux Machine
 
-_The Red Hat AI Inference Server in a single container. Open-weight models at zero cost per token._
+_Red Hat AI Inference in a single container. Open-weight models at zero cost per token._
 
-> This quickstart is the companion to [From Zero to Benchmark: Deploying LLM Inference on CPU with RHAIIS 3.5](URL).
+> This quickstart is the companion to [From Zero to Benchmark: Deploying LLM Inference on CPU with RHAII 3.5](URL).
 
 ## Overview
 
-The Red Hat AI Inference Server (RHAIIS) is a production-grade model serving engine — the same vLLM-based runtime that powers Red Hat AI on OpenShift. It also runs standalone on any Linux machine as a single container.
+Red Hat AI Inference (RHAII) is a production-grade model serving engine — the same vLLM-based runtime that powers Red Hat AI on OpenShift. It also runs standalone on any Linux machine as a single container.
 
 This quickstart walks you through it:
 
@@ -89,13 +89,13 @@ Not every model runs on every server. Here's what works where:
 
 Here's what the pieces are and how they fit together:
 
-**Red Hat AI Inference Server (RHAIIS)** is the production model serving engine built on vLLM. It's the same runtime that Red Hat AI deploys on OpenShift — but it also runs standalone as a container on any Linux machine. Enterprise-supported, optimized for Intel and AMD CPUs, with automatic hardware acceleration detection. RHAIIS 3.5 automatically handles OpenMP thread optimization — no manual `LD_PRELOAD` configuration needed.
+**Red Hat AI Inference (RHAII)** is the production model serving engine built on vLLM. It's the same runtime that Red Hat AI deploys on OpenShift — but it also runs standalone as a container on any Linux machine. Enterprise-supported, optimized for Intel and AMD CPUs, with automatic hardware acceleration detection. RHAII 3.5 automatically handles OpenMP thread optimization — no manual `LD_PRELOAD` configuration needed.
 
 **The models** are open-weight — you can download, run, and modify them without paying per token. This quickstart offers two choices:
 - **IBM Granite 2B** — lightweight, Apache 2.0 licensed, good for classification, extraction, and summarization
-- **Qwen 2.5 7B** — higher quality reasoning, matches the RHAIIS 3.5 blog configuration
+- **Qwen 2.5 7B** — higher quality reasoning, matches the RHAII 3.5 blog configuration
 
-**The container image** (`registry.redhat.io/rhaii-early-access/vllm-cpu-rhel9`) bundles the inference server with all dependencies. Model weights are cached on your host so subsequent starts skip the download.
+**The container image** (`registry.redhat.io/rhaii/vllm-cpu-rhel9`) bundles the inference server with all dependencies. Model weights are cached on your host so subsequent starts skip the download.
 
 ```
 ┌──────────────────────────────────────────┐
@@ -104,8 +104,8 @@ Here's what the pieces are and how they fit together:
 │  ┌────────────────────────────────────┐  │
 │  │  Container                         │  │
 │  │  ┌──────────────────────────────┐  │  │
-│  │  │  Red Hat AI Inference Server │  │  │
-│  │  │  (RHAIIS 3.5 / vLLM engine)  │  │  │
+│  │  │  Red Hat AI Inference         │  │  │
+│  │  │  (RHAII 3.5 / vLLM engine)   │  │  │
 │  │  │  ┌────────────────────────┐  │  │  │
 │  │  │  │ Granite 2B or Qwen 7B  │  │  │  │
 │  │  │  │ (open-weight)          │  │  │  │
@@ -158,7 +158,7 @@ podman run -d --name inference-server \
   -v ~/rhaii-cache:/opt/app-root/src/.cache:Z \
   -e "HF_TOKEN=$HF_TOKEN" \
   -e "VLLM_CPU_KVCACHE_SPACE=4" \
-  registry.redhat.io/rhaii-early-access/vllm-cpu-rhel9:3.5.0-ea.2-1782965184 \
+  registry.redhat.io/rhaii/vllm-cpu-rhel9:3.5.0-1786546771 \
   --model ibm-granite/granite-3.3-2b-instruct \
   --dtype bfloat16 \
   --host 0.0.0.0 \
@@ -176,7 +176,7 @@ podman run -d --name inference-server \
   -v ~/rhaii-cache:/opt/app-root/src/.cache:Z \
   -e "HF_TOKEN=$HF_TOKEN" \
   -e "VLLM_CPU_KVCACHE_SPACE=10" \
-  registry.redhat.io/rhaii-early-access/vllm-cpu-rhel9:3.5.0-ea.2-1782965184 \
+  registry.redhat.io/rhaii/vllm-cpu-rhel9:3.5.0-1786546771 \
   --model Qwen/Qwen2.5-7B-Instruct \
   --dtype bfloat16 \
   --host 0.0.0.0 \
@@ -250,7 +250,7 @@ curl -s http://localhost:8000/v1/chat/completions \
 
 > **Using Qwen 7B?** Replace the model value with `Qwen/Qwen2.5-7B-Instruct` in the curl commands below.
 
-You should get a coherent answer. This came from the Red Hat AI Inference Server running on your CPU — the same engine that powers production deployments on OpenShift.
+You should get a coherent answer. This came from Red Hat AI Inference running on your CPU — the same engine that powers production deployments on OpenShift.
 
 ## Step 6: Classify text
 
@@ -310,7 +310,7 @@ rm -rf ~/rhaii-cache
 
 This quickstart is the "Hello World" of self-hosted AI — a quick validation that you have the inference server running, the model is serving, and the performance is roughly what you'd expect. You proved:
 
-- The Red Hat AI Inference Server (RHAIIS 3.5) runs on your hardware
+- Red Hat AI Inference (RHAII 3.5) runs on your hardware
 - Open-weight models handle real tasks (classification, extraction, Q&A)
 - The API is OpenAI-compatible — anything you build here works everywhere
 - Model weights are cached locally for fast restarts
@@ -356,7 +356,7 @@ Open http://localhost:3000 in your browser. Create an admin account and start ch
 
 ## What makes this different from other runtimes
 
-| | Red Hat AI Inference Server (RHAIIS) | Other runtimes (Ollama, llama.cpp) |
+| | Red Hat AI Inference (RHAII) | Other runtimes (Ollama, llama.cpp) |
 |---|---|---|
 | **Engine** | vLLM — production throughput, continuous batching | llama.cpp — lightweight, single-user |
 | **Support** | Enterprise-supported by Red Hat | Community-supported |
@@ -365,7 +365,7 @@ Open http://localhost:3000 in your browser. Create an admin account and start ch
 | **Minimum RAM** | 16 GB (production architecture) | 4-8 GB |
 | **Best for** | Teams evaluating production AI infrastructure | Individual experimentation |
 
-> **Starting smaller?** [Ollama](https://ollama.com) runs the same IBM Granite models with lower memory on Mac, Linux, or Windows. Great for experimentation. When you're ready for production, the Red Hat AI Inference Server is the path forward.
+> **Starting smaller?** [Ollama](https://ollama.com) runs the same IBM Granite models with lower memory on Mac, Linux, or Windows. Great for experimentation. When you're ready for production, Red Hat AI Inference is the path forward.
 
 ## Try other models
 
@@ -373,7 +373,7 @@ The inference server runs any Hugging Face model. Swap the `--model` flag (or se
 
 | Model | Params | License | Good for | Notes |
 |---|---|---|---|---|
-| `Qwen/Qwen2.5-7B-Instruct` | 7B | Apache 2.0 | Multilingual reasoning | **Matches the RHAIIS 3.5 blog post**. Needs 32 GB RAM |
+| `Qwen/Qwen2.5-7B-Instruct` | 7B | Apache 2.0 | Multilingual reasoning | **Matches the RHAII 3.5 blog post**. Needs 32 GB RAM |
 | `ibm-granite/granite-3.3-2b-instruct` | 2B | Apache 2.0 | Classification, extraction, Q&A | **Default in this quickstart**. Runs on 16 GB |
 | `ibm-granite/granite-3.3-8b-instruct` | 8B | Apache 2.0 | Better reasoning, longer outputs | Needs ~32 GB RAM |
 | `Qwen/Qwen2.5-3B-Instruct` | 3B | Apache 2.0 | Multilingual, strong on benchmarks | Origin: CN — check your org's policy |
@@ -385,7 +385,7 @@ The inference server runs any Hugging Face model. Swap the `--model` flag (or se
 
 ## Want to go further?
 
-- **Read the blog** — [From Zero to Benchmark: Deploying LLM Inference on CPU with RHAIIS 3.5](URL) covers advanced benchmarking, NUMA pinning, tool calling, and interactive dashboards
+- **Read the blog** — [From Zero to Benchmark: Deploying LLM Inference on CPU with RHAII 3.5](URL) covers advanced benchmarking, NUMA pinning, tool calling, and interactive dashboards
 - **Build an AI agent** — wrap this model in tools and multi-step orchestration. Available as a hands-on lab on the [Red Hat Demo Platform](https://demo.redhat.com)
 - **Deploy on OpenShift** — the same container, managed with auto-scaling and a model management dashboard. Available as a hands-on lab on the [Red Hat Demo Platform](https://demo.redhat.com)
-- **Learn more** — [Red Hat AI Inference Server documentation](https://docs.redhat.com/en/documentation/red_hat_ai_inference_server/)
+- **Learn more** — [Red Hat AI Inference documentation](https://docs.redhat.com/en/documentation/red_hat_ai_inference_server/)
